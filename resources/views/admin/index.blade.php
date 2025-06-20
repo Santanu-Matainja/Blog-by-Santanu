@@ -102,7 +102,6 @@
                                             <span class="like-count" id="like-count-{{ $blog->id }}">
                                                 {{ $blog->likes }} Likes
                                             </span>
-
                                             @auth
                                                     <a href="{{ route('admin.blogs.edit', $blog->id) }}"
                                                         class="btn btn-warning btn-sm">Edit</a>
