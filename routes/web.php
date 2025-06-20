@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AdminController;
+
+
+
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('register', [UserController::class, 'create'])->name('register.form');
+Route::post('register', [UserController::class, 'store'])->name('register.store');
+
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+});
+
+Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy')->middleware('auth');
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/blogs', [AdminController::class, 'index'])-> name('admin.blogs');
+    Route::get('/admin/blogs/{blog}/edit', [AdminController::class, 'edit'])->name('admin.blogs.edit');
+    Route::put('/admin/blogs/{blog}', [AdminController::class, 'update'])->name('admin.blogs.update');
+    Route::delete('/admin/blogs/{blog}', [AdminController::class, 'destroy'])->name('admin.blogs.destroy');
+});
+
+Route::post('/blogs/{id}/like', [BlogController::class, 'ajaxToggleLike'])
+    ->name('blogs.like.ajax')->middleware('auth');
