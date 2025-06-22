@@ -33,20 +33,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ],
-        [
-            'email.unique' => 'Email Id Already Exists!'
-        ]
-    );
+        $validated = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6|confirmed',
+                'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ],
+            [
+                'email.unique' => 'Email Id Already Exists!'
+            ]
+        );
 
         $photoPath = null;
 
-         if ($request->hasFile('user_photo')) {
+        if ($request->hasFile('user_photo')) {
 
             $file = $request->file('user_photo');
             $timestamp = Carbon::now()->format('Ymd_His');
@@ -67,7 +68,6 @@ class UserController extends Controller
         Auth::login($user); // Log the user in
 
         return redirect()->route('dashboard');
-
     }
 
 

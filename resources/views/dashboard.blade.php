@@ -4,13 +4,7 @@
 <head>
     <title>Dashboard</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <link rel="stylesheet" href="{{ asset('storage/style.css') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
 </head>
@@ -25,13 +19,13 @@
             <div class="nav-left">
                 <div class="user-avatar">
                     @if ($user->user_photo)
-                        <img src="{{ asset('storage/' . $user->user_photo) }}" alt="User Photo" class="user-photo">
+                    <img src="{{ asset('storage/' . $user->user_photo) }}" alt="User Photo" class="user-photo h-32">
                     @else
-                        <div class="no-photo">{{ substr($user->name, 0, 2) }}</div>
+                    <div class="no-photo">{{ substr($user->name, 0, 2) }}</div>
                     @endif
                 </div>
 
-                <div class="welcome-text">Welcome, {{ $user->name }}!</div>
+                <div class="welcome-text text-2xl text-green-500">Welcome, {{ $user->name }}!</div>
             </div>
 
             <div class="nav-right">
@@ -50,17 +44,17 @@
             <!-- Tabs -->
             <ul class="nav nav-tabs mb-2" id="blogTab" role="tablist">
                 @foreach ($categories as $id => $name)
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab{{ $id }}" data-bs-toggle="tab"
-                            data-bs-target="#cat{{ $id }}" type="button" role="tab">
-                            {{ $name }}
-                        </button>
-                    </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab{{ $id }}" data-bs-toggle="tab"
+                        data-bs-target="#cat{{ $id }}" type="button" role="tab">
+                        {{ $name }}
+                    </button>
+                </li>
                 @endforeach
             </ul>
 
             @auth
-                <a href="{{ route('blogs.create') }}" class="btn mb-3" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: white;">Add Blog</a>
+            <a href="{{ route('blogs.create') }}" class="btn mb-3" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: white;">Add Blog</a>
             @endauth
         </div>
 
@@ -70,57 +64,57 @@
 
                 <div class="tab-content" id="blogTabContent">
                     @foreach ($categories as $id => $name)
-                        <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="cat{{ $id }}"
-                            role="tabpanel">
-                            @php $catBlogs = $blogs->where('category', $id); @endphp
+                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="cat{{ $id }}"
+                        role="tabpanel">
+                        @php $catBlogs = $blogs->where('category', $id); @endphp
 
-                            @forelse ($catBlogs as $blog)
-                                <div class="card mb-3">
-                                    @if ($blog->image)
-                                        <img src="{{ asset('storage/' . $blog->image) }}" class="card-img-top m-2"
-                                            style="max-height: 200px; max-width: 200px; object-fit: fill;">
-                                    @endif
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $blog->title }}</h5>
-                                        <p class="card-text">{{ $blog->description }}</p>
-                                        <p class="text-muted">
-                                            Posted by <strong>{{ $blog->user->name }}</strong> on
-                                            {{ $blog->created_at->format('d M Y, h:i A') }}
-                                        </p>
+                        @forelse ($catBlogs as $blog)
+                        <div class="card mb-3">
+                            @if ($blog->image)
+                            <img src="{{ asset('storage/' . $blog->image) }}" class="card-img-top m-2"
+                                style="max-height: 200px; max-width: 200px; object-fit: fill;">
+                            @endif
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $blog->title }}</h5>
+                                <p class="card-text">{{ $blog->description }}</p>
+                                <p class="text-muted">
+                                    Posted by <strong>{{ $blog->user->name }}</strong> on
+                                    {{ $blog->created_at->format('d M Y, h:i A') }}
+                                </p>
 
 
-                                        {{-- Likes --}}
+                                {{-- Likes --}}
 
-                                        @php
-                                            $user = auth()->user();
-                                            $liked = $user && $user->hasLikedBlog($blog->id);
-                                        @endphp
+                                @php
+                                $user = auth()->user();
+                                $liked = $user && $user->hasLikedBlog($blog->id);
+                                @endphp
 
-                                        <span class="like-icon" data-blog-id="{{ $blog->id }}"
-                                            style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
-                                            {{ $liked ? '❤️' : '🤍' }}
-                                        </span>
+                                <span class="like-icon" data-blog-id="{{ $blog->id }}"
+                                    style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
+                                    {{ $liked ? '❤️' : '🤍' }}
+                                </span>
 
-                                        <span class="like-count" id="like-count-{{ $blog->id }}">
-                                            {{ $blog->likes }} Likes
-                                        </span>
+                                <span class="like-count" id="like-count-{{ $blog->id }}">
+                                    {{ $blog->likes }} Likes
+                                </span>
 
-                                        @auth
-                                            @if (Auth::id() === $blog->user_id)
-                                                <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="mt-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure?')">Delete Blog</button>
-                                                </form>
-                                            @endif
-                                        @endauth
-                                    </div>
-                                </div>
-                            @empty
-                                <p>No blogs in this category.</p>
-                            @endforelse
+                                @auth
+                                @if (Auth::id() === $blog->user_id)
+                                <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="mt-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure?')">Delete Blog</button>
+                                </form>
+                                @endif
+                                @endauth
+                            </div>
                         </div>
+                        @empty
+                        <p>No blogs in this category.</p>
+                        @endforelse
+                    </div>
                     @endforeach
                 </div>
 
@@ -186,20 +180,20 @@
 
 
     <script>
-        document.querySelectorAll('.like-icon').forEach(function (icon) {
-            icon.addEventListener('click', function () {
+        document.querySelectorAll('.like-icon').forEach(function(icon) {
+            icon.addEventListener('click', function() {
                 const blogId = this.getAttribute('data-blog-id');
                 const iconEl = this;
                 const countEl = document.getElementById('like-count-' + blogId);
 
                 fetch(`/blogs/${blogId}/like`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({})
-                })
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({})
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === 'success') {
@@ -211,13 +205,13 @@
                     .catch(err => console.error('Error:', err));
             });
         });
- 
-        
+
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             const scrollProgress = document.getElementById('scrollProgress');
-            
+
             if (window.scrollY > 20) {
                 navbar.classList.add('scrolled');
             } else {
