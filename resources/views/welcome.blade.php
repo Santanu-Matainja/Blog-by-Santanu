@@ -16,7 +16,7 @@
             <a class="navbar-brand" href="#">Navbar</a>
         </div>
 
-        <a href="{{ route('login')}}" type="button" class="btn btn-primary mx-2">Login</a>
+        <a href="{{ route('login.form')}}" type="button" class="btn btn-primary mx-2">Login</a>
         <a href="{{ route('register.form')}}" type="button" class="btn btn-primary mx-2">SignUp</a>
 
     </nav>
