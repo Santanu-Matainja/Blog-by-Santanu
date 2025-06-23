@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
-   
+
 </head>
 
 <body>
@@ -35,7 +35,7 @@
                 <div class="welcome-text">Welcome, {{ $user->name }}!</div>
             </div>
 
-            <div  class="nav-right">
+            <div class="nav-right">
                 <div>
                     @yield('togglebtn')
                 </div>
@@ -53,9 +53,21 @@
 
 
     <footer class="text-gray-400 bg-gray-900 body-font">
-        <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-wrap md:text-left text-center -mb-10 -mx-4">
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
+        <div
+            class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+            <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+                <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2"
+                        class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                    <span class="ml-3 text-xl">Tailblocks</span>
+                </a>
+                <p class="mt-2 text-sm text-gray-500">Air plant banjo lyft occupy retro adaptogen indego</p>
+            </div>
+            <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                     <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
                     <nav class="list-none mb-10">
                         <li>
@@ -72,7 +84,7 @@
                         </li>
                     </nav>
                 </div>
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                     <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
                     <nav class="list-none mb-10">
                         <li>
@@ -89,7 +101,7 @@
                         </li>
                     </nav>
                 </div>
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                     <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
                     <nav class="list-none mb-10">
                         <li>
@@ -106,41 +118,7 @@
                         </li>
                     </nav>
                 </div>
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
-                    <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-gray-400 hover:text-white">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Fourth Link</a>
-                        </li>
-                    </nav>
-                </div>
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
-                    <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
-                    <nav class="list-none mb-10">
-                        <li>
-                            <a class="text-gray-400 hover:text-white">First Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Second Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Third Link</a>
-                        </li>
-                        <li>
-                            <a class="text-gray-400 hover:text-white">Fourth Link</a>
-                        </li>
-                    </nav>
-                </div>
-                <div class="lg:w-1/6 md:w-1/2 w-full px-4">
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                     <h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">CATEGORIES</h2>
                     <nav class="list-none mb-10">
                         <li>
@@ -159,22 +137,13 @@
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-800">
-            <div class="container px-5 py-8 flex flex-wrap mx-auto items-center">
-                <div class="flex md:flex-nowrap flex-wrap justify-center items-end md:justify-start">
-                    <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
-                        <label for="footer-field" class="leading-7 text-sm text-gray-400">Placeholder</label>
-                        <input type="text" id="footer-field" name="footer-field"
-                            class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:ring-2 focus:ring-indigo-900 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                    </div>
-                    <button
-                        class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Button</button>
-                    <p class="text-gray-500 text-sm md:ml-6 md:mt-0 mt-2 text-center sm:text-left">Bitters chicharrones
-                        fanny pack
-                        <br class="lg:block hidden">waistcoat green juice
-                    </p>
-                </div>
-                <span class="inline-flex lg:ml-auto lg:mt-0 mt-6 w-full justify-center md:justify-start md:w-auto">
+        <div class="bg-gray-800 bg-opacity-75">
+            <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+                <p class="text-gray-400 text-sm text-center sm:text-left">© 2020 Tailblocks —
+                    <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" class="text-gray-500 ml-1"
+                        target="_blank">@knyttneve</a>
+                </p>
+                <span class="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
                     <a class="text-gray-400">
                         <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             class="w-5 h-5" viewBox="0 0 24 24">
@@ -206,17 +175,6 @@
                         </svg>
                     </a>
                 </span>
-            </div>
-        </div>
-        <div class="bg-gray-800 bg-opacity-75">
-            <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-                <p class="text-gray-400 text-sm text-center sm:text-left">© 2020 Tailblocks —
-                    <a href="https://twitter.com/knyttneve" class="text-gray-500 ml-1" target="_blank"
-                        rel="noopener noreferrer">@knyttneve</a>
-                </p>
-                <span
-                    class="sm:ml-auto sm:mt-0 mt-2 sm:w-auto w-full sm:text-left text-center text-gray-400 text-sm">Enamel
-                    pin tousled raclette tacos irony</span>
             </div>
         </div>
     </footer>

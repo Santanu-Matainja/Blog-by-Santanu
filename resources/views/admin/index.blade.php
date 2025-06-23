@@ -5,10 +5,12 @@
 @section('content')
 
     @section('togglebtn')
-        <a href="{{ route('logout') }}" class="logout-btn">
+        <a href="{{ route('admin.users') }}" class="logout-btn">
             <span>View User's</span>
         </a>
     @endsection
+
+    
     <div class="scroll-indicator" id="scrollProgress"></div>
 
 

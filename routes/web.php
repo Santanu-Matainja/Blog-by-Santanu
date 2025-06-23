@@ -40,6 +40,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/blogs/{blog}/edit', [AdminController::class, 'edit'])->name('admin.blogs.edit');
     Route::put('/admin/blogs/{blog}', [AdminController::class, 'update'])->name('admin.blogs.update');
     Route::delete('/admin/blogs/{blog}', [AdminController::class, 'destroy'])->name('admin.blogs.destroy');
+
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+    Route::post('/admin/users/{id}/update', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 });
 
 Route::post('/blogs/{id}/like', [BlogController::class, 'ajaxToggleLike'])

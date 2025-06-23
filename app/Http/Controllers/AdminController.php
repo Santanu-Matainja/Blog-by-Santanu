@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+  
 class AdminController extends Controller
 {
     public function index()
@@ -45,5 +46,46 @@ class AdminController extends Controller
 
         return back()->with('success', 'Blog deleted');
     }
-}
 
+
+    // Show all users
+    public function users()
+    {
+        $users =  User::where('user_type', 'user')->get();
+        return view('admin.users.index', compact('users'));
+    }
+
+    // Show edit form
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    // Update user
+    public function updateUser(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update($request->only('name', 'email'));
+
+        return redirect()->route('admin.users')->with('success', 'User updated successfully.');
+    }
+
+    // Delete user
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->user_type === 'admin') {
+            return back()->with('error', 'Cannot delete another admin.');
+        }
+
+        $user->delete();
+        return back()->with('success', 'User deleted successfully.');
+    }
+}
