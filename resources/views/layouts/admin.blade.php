@@ -35,10 +35,15 @@
                 <div class="welcome-text">Welcome, {{ $user->name }}!</div>
             </div>
 
-            <div class="nav-right">
-                <a href="{{ route('logout') }}" class="logout-btn">
-                    <span>Logout</span>
-                </a>
+            <div  class="nav-right">
+                <div>
+                    @yield('togglebtn')
+                </div>
+                <div>
+                    <a href="{{ route('logout') }}" class="logout-btn">
+                        <span>Logout</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
