@@ -21,7 +21,7 @@ Route::get('register', [UserController::class, 'create'])->name('register.form')
 Route::post('register', [UserController::class, 'store'])->name('register.store');
 
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
