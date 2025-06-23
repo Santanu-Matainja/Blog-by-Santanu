@@ -21,21 +21,21 @@ class AdminRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->routeIs('admin.blogs.update')) {
+   
             return [
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ];
-        }
+        
 
-        $id = $this->route('id');
-        if ($this->routeIs('admin.users.update')) {
-            return [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
-                'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ];
-        }
+        // $id = $this->route('id');
+        // if ($this->routeIs('admin.users.update')) {
+        //     return [
+        //         'name' => 'required|string|max:255',
+        //         'email' => 'required|email|unique:users,email,' . $id,
+        //         'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     ];
+        // }
     }
 }
