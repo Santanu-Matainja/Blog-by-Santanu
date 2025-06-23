@@ -18,18 +18,8 @@
             @endif
 
             <div class="mb-3">
-                <label for="imageInput" class="form-label">Image</label>
-
-                {{-- Fake input to show existing file name --}}
-                <input type="text" class="form-control mb-2" id="fileNameDisplay"
-                    value="{{ $blog->image ? basename($blog->image) : '' }}" readonly>
-
-                {{-- Real file input, hidden --}}
-                <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"
-                    style="display: none;">
-
-                <button type="button" class="btn btn-secondary mt-2"
-                    onclick="document.getElementById('imageInput').click()">Choose New Image</button>
+                <label for="image">Upload New Image</label>
+                <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)">
             </div>
 
             <div class="mb-3">
@@ -52,14 +42,15 @@
 @endsection
 
 @push('scripts')
-    <script>
-        const fileInput = document.getElementById('imageInput');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
 
-        fileInput.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                fileNameDisplay.value = this.files[0].name;
-            }
-        });
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
 @endpush

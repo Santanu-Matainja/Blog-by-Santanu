@@ -7,7 +7,11 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-  
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+
 class AdminController extends Controller
 {
     public function index()
@@ -29,11 +33,31 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $blog->update($request->only('title', 'description'));
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+        ];
 
-        return redirect()->route('admin.blogs')->with('success', 'Blog updated');
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($blog->image && File::exists(public_path('storage/' . $blog->image))) {
+                File::delete(public_path('storage/' . $blog->image));
+            }
+
+            $user = User::find($blog->user_id);
+            $file = $request->file('image');
+            $filename = Str::slug($user->name) . '_blog_' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+            $filepath = $file->storeAs('blog_images', $filename, 'public');
+
+            $data['image'] = $filepath;
+        }
+
+        $blog->update($data);
+
+        return redirect()->route('admin.blogs')->with('success', 'Blog updated successfully.');
     }
 
     public function destroy(Blog $blog)
@@ -68,10 +92,28 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
+            'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = User::findOrFail($id);
-        $user->update($request->only('name', 'email'));
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->hasFile('user_photo')) {
+            // Delete old photo if exists
+            if ($user->user_photo && File::exists(public_path('storage/' . $user->user_photo))) {
+                File::delete(public_path('storage/' . $user->user_photo));
+            }
+
+            // New photo filename
+            $file = $request->file('user_photo');
+            $filename = Str::slug($user->name) . '_' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+            $filepath = $file->storeAs('user_photos', $filename, 'public');
+
+            $user->user_photo = $filepath;
+        }
+
+        $user->save();
 
         return redirect()->route('admin.users')->with('success', 'User updated successfully.');
     }

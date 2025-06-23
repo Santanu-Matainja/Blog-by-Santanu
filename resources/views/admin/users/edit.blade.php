@@ -10,25 +10,39 @@
         </a>
     @endsection
 
-<div class="container">
-    <h2 class="text-white">Edit User</h2>
+    <div class="container">
+        <h2 class="text-white">Edit User</h2>
 
-    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
-        @csrf
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="mb-3">
-            <label class="text-white my-1">Name</label>
-            <input type="text" name="name" value="{{ $user->name }}" class="form-control" required>
-        </div>
+            <div class="mb-3">
+                <label class="text-white my-1">Name</label>
+                <input type="text" name="name" value="{{ $user->name }}" class="form-control" required>
+            </div>
 
-        <div class="mb-3">
-            <label class="text-white my-1">Email</label>
-            <input type="email" name="email" value="{{ $user->email }}" class="form-control" required>
-        </div>
+            <div class="mb-3">
+                <label class="text-white my-1">Email</label>
+                <input type="email" name="email" value="{{ $user->email }}" class="form-control" required>
+            </div>
 
-        
-        <button type="submit" class="btn btn-success my-2">Update User</button>
-        <a href="{{ route('admin.users') }}" class="btn btn-secondary my-2">Cancel</a>
-    </form>
-</div>
+            <div class="mb-3">
+                <label class="text-white my-1">Current Photo</label><br>
+                @if ($user->user_photo)
+                    <img src="{{ asset('storage/' . $user->user_photo) }}" width="100" class="mb-2 rounded">
+                @else
+                    <p class="text-white my-1">No photo uploaded</p>
+                @endif
+            </div>
+
+            <div class="mb-3">
+                <label class="text-white my-1">New Photo (Optional)</label>
+                <input type="file" name="user_photo" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success my-2">Update User</button>
+            <a href="{{ route('admin.users') }}" class="btn btn-secondary my-2">Cancel</a>
+        </form>
+
+    </div>
 @endsection
