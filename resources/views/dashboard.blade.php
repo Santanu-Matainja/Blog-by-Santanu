@@ -50,31 +50,35 @@
 
 
                                         {{-- Likes --}}
+                                        <div class="d-flex flex-row justify-content-between align-items-center">
+                                            <div>
+                                                @php
+                                                    $user = auth()->user();
+                                                    $liked = $user && $user->hasLikedBlog($blog->id);
+                                                @endphp
 
-                                        @php
-                                            $user = auth()->user();
-                                            $liked = $user && $user->hasLikedBlog($blog->id);
-                                        @endphp
+                                                <span class="like-icon" data-blog-id="{{ $blog->id }}"
+                                                    style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
+                                                    {{ $liked ? '❤️' : '🤍' }}
+                                                </span>
 
-                                        <span class="like-icon" data-blog-id="{{ $blog->id }}"
-                                            style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
-                                            {{ $liked ? '❤️' : '🤍' }}
-                                        </span>
-
-                                        <span class="like-count" id="like-count-{{ $blog->id }}">
-                                            {{ $blog->likes }} Likes
-                                        </span>
-
-                                        @auth
-                                            @if (Auth::id() === $blog->user_id)
-                                                <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="mt-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure?')">Delete Blog</button>
-                                                </form>
-                                            @endif
-                                        @endauth
+                                                <span class="like-count" id="like-count-{{ $blog->id }}">
+                                                    {{ $blog->likes }} Likes
+                                                </span>
+                                            </div>    
+                                            <div>
+                                                @auth
+                                                    @if (Auth::id() === $blog->user_id)
+                                                        <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="mt-2">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Are you sure?')">Delete Blog</button>
+                                                        </form>
+                                                    @endif
+                                                @endauth
+                                            </div>
+                                        </div>        
                                     </div>
                                 </div>
                             @empty

@@ -4,15 +4,15 @@
 
 @section('content')
 
-    <div class="container mt-5">
-        <h2>Add New Blog</h2>
+    <div class="container mt-2">
+        <h2 class="text-white">Add New Blog</h2>
 
 
         <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
-                <label class="my-1">Blog Title</label>
+                <label class="my-1 text-white">Blog Title</label>
                 <input type="text" name="title" class="form-control" required>
 
                 @error('title')
@@ -21,7 +21,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="my-1">Blog Image</label>
+                <label class="my-1 text-white">Blog Image</label>
                 <input type="file" name="image" class="form-control" accept="image/*">
 
                 @error('image')
@@ -30,7 +30,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="my-1">Description</label>
+                <label class="my-1 text-white">Description</label>
                 <textarea name="description" rows="5" class="form-control" required></textarea>
 
                 @error('description')
@@ -38,8 +38,8 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label>Category</label>
+            <div class="mb-3 text-white">
+                <label class="my-1">Category</label>
                 <select name="category" class="form-control" required>
                     @foreach (\App\Models\Blog::categories() as $id => $name)
                         <option value="{{ $id }}">{{ $name }}</option>

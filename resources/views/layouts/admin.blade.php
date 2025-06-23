@@ -219,8 +219,6 @@
 
     @stack('scripts')
 
-   
-
 
 </body>
 

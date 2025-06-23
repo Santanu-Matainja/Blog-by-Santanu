@@ -5,6 +5,7 @@
 @section('content')
     <div class="scroll-indicator" id="scrollProgress"></div>
 
+
     <div class="container mt-2">
 
         <div class="d-flex justify-content-between">
@@ -51,32 +52,37 @@
 
 
                                         {{-- Likes --}}
-                                        <div>
-                                            @php
-                                                $user = auth()->user();
-                                                $liked = $user && $user->hasLikedBlog($blog->id);
-                                            @endphp
+                                        <div class="d-flex flex-row justify-content-between align-items-center">
+                                            <div>
+                                                @php
+                                                    $user = auth()->user();
+                                                    $liked = $user && $user->hasLikedBlog($blog->id);
+                                                @endphp
 
-                                            <span class="like-icon" data-blog-id="{{ $blog->id }}"
-                                                style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
-                                                {{ $liked ? '❤️' : '🤍' }}
-                                            </span>
+                                                <span class="like-icon" data-blog-id="{{ $blog->id }}"
+                                                    style="cursor: pointer; font-size: 24px; color: {{ $liked ? 'red' : '#999' }};">
+                                                    {{ $liked ? '❤️' : '🤍' }}
+                                                </span>
 
-                                            <span class="like-count" id="like-count-{{ $blog->id }}">
-                                                {{ $blog->likes }} Likes
-                                            </span>
-                                            @auth
-                                                <a href="{{ route('admin.blogs.edit', $blog->id) }}"
-                                                    class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button onclick="return confirm('Are you sure?')"
-                                                        class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
+                                                <span class="like-count" id="like-count-{{ $blog->id }}">
+                                                    {{ $blog->likes }} Likes
+                                                </span>
+                                            </div>
 
-                                            @endauth
+                                            <div>
+                                                @auth
+                                                    <a href="{{ route('admin.blogs.edit', $blog->id) }}"
+                                                        class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST"
+                                                        class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button onclick="return confirm('Are you sure?')"
+                                                            class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+
+                                                @endauth
+                                            </div>
                                         </div>
 
                                     </div>
@@ -152,25 +158,5 @@
             scrollProgress.style.width = scrolled + '%';
         });
 
-        // Handle logout (replace with your actual logout logic)
-        function handleLogout() {
-            // Add your logout logic here
-            alert('Logout clicked! Replace this with your actual logout route.');
-        }
-
-        // Demo: Toggle between photo and no-photo state
-        let hasPhoto = true;
-        document.getElementById('userPhoto').addEventListener('click', function () {
-            const container = this.parentElement;
-            if (hasPhoto) {
-                container.innerHTML = '<div class="no-photo">JD</div>';
-                hasPhoto = false;
-            } else {
-                container.innerHTML = '<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User Photo" class="user-photo" id="userPhoto">';
-                hasPhoto = true;
-                // Re-attach click listener
-                document.getElementById('userPhoto').addEventListener('click', arguments.callee);
-            }
-        });
     </script>
 @endpush
