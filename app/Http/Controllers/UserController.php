@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -31,19 +32,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $validated = $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|string|min:6|confirmed',
-                'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ],
-            [
-                'email.unique' => 'Email Id Already Exists!'
-            ]
-        );
+        $validated = $request->validated();
 
         $photoPath = null;
 
@@ -51,7 +42,7 @@ class UserController extends Controller
 
             $file = $request->file('user_photo');
             $timestamp = Carbon::now()->format('Ymd_His');
-            $username = Str::slug($validated['name']); // safe slug like "john-doe"
+            $username = Str::slug($validated['name']); 
             $filename = $username . '_' . $timestamp . '.' . $file->getClientOriginalExtension();
 
             $photoPath = $file->storeAs('user_photos', $filename, 'public');

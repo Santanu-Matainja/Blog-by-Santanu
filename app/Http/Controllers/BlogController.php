@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\BlogRequest;
+
 
 class BlogController extends Controller
 {
@@ -25,14 +27,9 @@ class BlogController extends Controller
         return view('blogs', compact('user'));
     }
 
-    public function store(Request $request)
+    public function store(BlogRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'required|string',
-            'category' => 'required|in:1,2,3,4',
-        ]);
+        $request->validated();
 
         $imagePath = null;
 

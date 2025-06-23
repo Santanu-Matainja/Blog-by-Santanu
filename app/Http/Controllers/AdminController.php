@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use App\Http\Requests\AdminRequest;
 
 class AdminController extends Controller
 {
@@ -28,13 +28,9 @@ class AdminController extends Controller
         return view('admin.edit', compact('blog', 'user'));
     }
 
-    public function update(Request $request, Blog $blog)
+    public function update(AdminRequest $request, Blog $blog)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $request->validated();
 
         $data = [
             'title' => $request->title,
@@ -87,13 +83,9 @@ class AdminController extends Controller
     }
 
     // Update user
-    public function updateUser(Request $request, $id)
+    public function updateUser(AdminRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'user_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $request->validated();
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
