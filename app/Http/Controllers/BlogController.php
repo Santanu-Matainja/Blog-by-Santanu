@@ -21,7 +21,8 @@ class BlogController extends Controller
 
     public function create()
     {
-        return view('blogs');
+        $user = Auth::user();
+        return view('blogs', compact('user'));
     }
 
     public function store(Request $request)

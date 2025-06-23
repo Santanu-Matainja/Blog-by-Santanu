@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Admin Edit</title>
-</head>
+@section('title', 'Admin Edit')
 
-<body>
-    <div class="container mt-5">
-        <h2>Edit Blog</h2>
+@section('content')
+
+    <div class="container mt-2">
+        <h2 class="mb-1">Edit Blog</h2>
 
         <form method="POST" action="{{ route('admin.blogs.update', $blog->id) }}">
             @csrf
             @method('PUT')
+
+            {{-- Show current image preview --}}
+            @if ($blog->image)
+                <img src="{{ asset('storage/' . $blog->image) }}" class="card-img-top m-2"
+                    style="max-height: 200px; max-width: 200px; object-fit: fill;">
+            @endif
 
             <div class="mb-3">
                 <label for="imageInput" class="form-label">Image</label>
@@ -33,24 +32,6 @@
                     onclick="document.getElementById('imageInput').click()">Choose New Image</button>
             </div>
 
-            {{-- Show current image preview --}}
-            @if ($blog->image)
-                <img src="{{ asset('storage/' . $blog->image) }}" class="card-img-top m-2"
-                    style="max-height: 200px; max-width: 200px; object-fit: fill;">
-            @endif
-
-            <script>
-                const fileInput = document.getElementById('imageInput');
-                const fileNameDisplay = document.getElementById('fileNameDisplay');
-
-                fileInput.addEventListener('change', function () {
-                    if (this.files.length > 0) {
-                        fileNameDisplay.value = this.files[0].name;
-                    }
-                });
-            </script>
-
-
             <div class="mb-3">
                 <label>Title</label>
                 <input type="text" name="title" class="form-control" value="{{ $blog->title }}">
@@ -61,9 +42,24 @@
                 <textarea name="description" class="form-control" rows="4">{{ $blog->description }}</textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Blog</button>
+            <button type="submit" class="btn btn-success mb-1">Update Blog</button>
         </form>
     </div>
-</body>
 
-</html>
+
+
+
+@endsection
+
+@push('scripts')
+    <script>
+        const fileInput = document.getElementById('imageInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                fileNameDisplay.value = this.files[0].name;
+            }
+        });
+    </script>
+@endpush

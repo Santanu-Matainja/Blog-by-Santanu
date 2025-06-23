@@ -1,51 +1,14 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.admin')
 
-<head>
-    <title>Dashboard</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('title', 'Admin Dashboard')
 
-    <link rel="stylesheet" href="{{ asset('storage/style.css') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
-
-</head>
-
-<body>
-
+@section('content')
     <div class="scroll-indicator" id="scrollProgress"></div>
-
-    <!-- Navbar -->
-    <nav class="navbarr" id="navbar">
-        <div class="nav-container">
-            <div class="nav-left">
-                <div class="user-avatar">
-                    @if ($user->user_photo)
-                        <img src="{{ asset('storage/' . $user->user_photo) }}" alt="User Photo" class="user-photo">
-                    @else
-                        <div class="no-photo">{{ substr($user->name, 0, 2) }}</div>
-                    @endif
-                </div>
-
-                <div class="welcome-text">Welcome, {{ $user->name }}!</div>
-            </div>
-
-            <div class="nav-right">
-                <a href="{{ route('logout') }}" class="logout-btn">
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
 
     <div class="container mt-2">
 
         <div class="d-flex justify-content-between">
- 
+
             <!-- Tabs -->
             <ul class="nav nav-tabs mb-2" id="blogTab" role="tablist">
                 @foreach ($categories as $id => $name)
@@ -70,8 +33,7 @@
 
                 <div class="tab-content" id="blogTabContent">
                     @foreach ($categories as $id => $name)
-                        <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="cat{{ $id }}"
-                            role="tabpanel">
+                        <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="cat{{ $id }}" role="tabpanel">
                             @php $catBlogs = $blogs->where('category', $id); @endphp
 
                             @forelse ($catBlogs as $blog)
@@ -84,7 +46,8 @@
                                         <h5 class="card-title">{{ $blog->title }}</h5>
                                         <p class="card-text">{{ $blog->description }}</p>
                                         <p class="text-muted">By: {{ $blog->user->name }} |
-                                            {{ $blog->created_at->format('d M Y') }}</p>
+                                            {{ $blog->created_at->format('d M Y') }}
+                                        </p>
 
 
                                         {{-- Likes --}}
@@ -103,18 +66,18 @@
                                                 {{ $blog->likes }} Likes
                                             </span>
                                             @auth
-                                                    <a href="{{ route('admin.blogs.edit', $blog->id) }}"
-                                                        class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button onclick="return confirm('Are you sure?')"
-                                                            class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                
+                                                <a href="{{ route('admin.blogs.edit', $blog->id) }}"
+                                                    class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
+
                                             @endauth
-                                        </div>  
+                                        </div>
 
                                     </div>
                                 </div>
@@ -139,52 +102,9 @@
         </div>
     </div>
 
+@endsection
 
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row1">
-                <div class="footer-col">
-                    <h4>company</h4>
-                    <ul>
-                        <li><a href="#">about us</a></li>
-                        <li><a href="#">our services</a></li>
-                        <li><a href="#">privacy policy</a></li>
-                        <li><a href="#">affiliate program</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>get help</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">shipping</a></li>
-                        <li><a href="#">returns</a></li>
-                        <li><a href="#">order status</a></li>
-                        <li><a href="#">payment options</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>online shop</h4>
-                    <ul>
-                        <li><a href="#">watch</a></li>
-                        <li><a href="#">bag</a></li>
-                        <li><a href="#">shoes</a></li>
-                        <li><a href="#">dress</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>follow us</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+@push('scripts')
 
     <script>
         document.querySelectorAll('.like-icon').forEach(function (icon) {
@@ -253,6 +173,4 @@
             }
         });
     </script>
-</body>
-
-</html>
+@endpush
