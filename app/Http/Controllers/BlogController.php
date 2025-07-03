@@ -38,7 +38,7 @@ class BlogController extends Controller
             $timestamp = Carbon::now()->format('Ymd_His');
             $username = Str::slug(Auth::user()->name);
             $filename = $username . '_blog_' . $timestamp . '.' . $file->getClientOriginalExtension();
-            $imagePath = $file->storeAs('blog_images', $filename, 'public');
+            $imagePath = Storage::disk('public')->putFileAs('blog_images', $file, $filename);
         }
 
         Blog::create([

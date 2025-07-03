@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
@@ -8,11 +10,23 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminController;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard')->middleware(['auth', 'verified']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
 
 Route::get('register', [UserController::class, 'create'])->name('register.form');
 Route::post('register', [UserController::class, 'store'])->name('register.store');
@@ -28,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
 });
 
-Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard')->middleware('auth');
+
 Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy')->middleware('auth');
 
 
